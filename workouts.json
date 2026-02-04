@@ -19,6 +19,16 @@
         { "reps": 12, "weight": 7.5 },
         { "reps": 12, "weight": 10 }
       ]
+    },
+    {
+      "date": "2026-02-04",
+      "exercise": "Leg Press",
+      "muscle": "Legs",
+      "sets": [
+        { "reps": 15, "weight": 80 },
+        { "reps": 15, "weight": 90 },
+        { "reps": 15, "weight": 110 }
+      ]
     }
   ]
 }
