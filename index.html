@@ -1,0 +1,713 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sheshu's Fitness Dashboard</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    
+    :root {
+      --bg-primary: #0a0a0f;
+      --bg-secondary: #12121a;
+      --bg-card: #1a1a25;
+      --bg-hover: #22222f;
+      --accent: #6366f1;
+      --accent-glow: rgba(99, 102, 241, 0.3);
+      --success: #22c55e;
+      --warning: #f59e0b;
+      --danger: #ef4444;
+      --text-primary: #f8fafc;
+      --text-secondary: #94a3b8;
+      --text-muted: #64748b;
+      --border: rgba(255,255,255,0.06);
+    }
+    
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      min-height: 100vh;
+      padding: 24px;
+      line-height: 1.5;
+    }
+    
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    
+    /* Header */
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 32px;
+      padding-bottom: 24px;
+      border-bottom: 1px solid var(--border);
+    }
+    
+    .header h1 {
+      font-size: 1.75rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, #fff 0%, #6366f1 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    
+    .header .date {
+      color: var(--text-secondary);
+      font-size: 0.9rem;
+    }
+    
+    .header .streak {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--bg-card);
+      padding: 8px 16px;
+      border-radius: 100px;
+      font-weight: 600;
+      font-size: 0.9rem;
+    }
+    
+    .header .streak .fire { font-size: 1.1rem; }
+    
+    /* Grid Layout */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 20px;
+    }
+    
+    .col-4 { grid-column: span 4; }
+    .col-6 { grid-column: span 6; }
+    .col-8 { grid-column: span 8; }
+    .col-12 { grid-column: span 12; }
+    
+    @media (max-width: 900px) {
+      .col-4, .col-6, .col-8 { grid-column: span 12; }
+    }
+    
+    /* Cards */
+    .card {
+      background: var(--bg-card);
+      border-radius: 16px;
+      padding: 24px;
+      border: 1px solid var(--border);
+    }
+    
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+    
+    .card-title {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--text-secondary);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    
+    .card-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.1rem;
+    }
+    
+    /* Stat Cards */
+    .stat-value {
+      font-size: 2.5rem;
+      font-weight: 800;
+      margin-bottom: 4px;
+    }
+    
+    .stat-label {
+      color: var(--text-muted);
+      font-size: 0.85rem;
+    }
+    
+    .stat-bar {
+      height: 6px;
+      background: var(--bg-secondary);
+      border-radius: 100px;
+      margin-top: 16px;
+      overflow: hidden;
+    }
+    
+    .stat-bar-fill {
+      height: 100%;
+      border-radius: 100px;
+      transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    
+    .calories .stat-value { color: var(--danger); }
+    .calories .card-icon { background: rgba(239, 68, 68, 0.15); }
+    .calories .stat-bar-fill { background: linear-gradient(90deg, var(--danger), #f97316); }
+    
+    .protein .stat-value { color: var(--accent); }
+    .protein .card-icon { background: rgba(99, 102, 241, 0.15); }
+    .protein .stat-bar-fill { background: linear-gradient(90deg, var(--accent), #8b5cf6); }
+    
+    .workouts .stat-value { color: var(--success); }
+    .workouts .card-icon { background: rgba(34, 197, 94, 0.15); }
+    .workouts .stat-bar-fill { background: linear-gradient(90deg, var(--success), #10b981); }
+    
+    /* Ring Progress */
+    .ring-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px 0;
+    }
+    
+    .ring {
+      position: relative;
+      width: 180px;
+      height: 180px;
+    }
+    
+    .ring svg {
+      transform: rotate(-90deg);
+      width: 100%;
+      height: 100%;
+    }
+    
+    .ring circle {
+      fill: none;
+      stroke-width: 12;
+      stroke-linecap: round;
+    }
+    
+    .ring .bg { stroke: var(--bg-secondary); }
+    .ring .progress-cal { stroke: var(--danger); }
+    .ring .progress-protein { stroke: var(--accent); }
+    
+    .ring-center {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      text-align: center;
+    }
+    
+    .ring-center .value {
+      font-size: 2rem;
+      font-weight: 800;
+    }
+    
+    .ring-center .label {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+    }
+    
+    /* Food Log */
+    .food-log {
+      max-height: 320px;
+      overflow-y: auto;
+    }
+    
+    .food-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 14px 0;
+      border-bottom: 1px solid var(--border);
+    }
+    
+    .food-item:last-child { border-bottom: none; }
+    
+    .food-info {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    
+    .food-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      background: var(--bg-secondary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+    }
+    
+    .food-name {
+      font-weight: 500;
+      margin-bottom: 2px;
+    }
+    
+    .food-time {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+    
+    .food-macros {
+      text-align: right;
+    }
+    
+    .food-cal {
+      font-weight: 700;
+      color: var(--danger);
+    }
+    
+    .food-protein {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+    
+    /* Workout Log */
+    .workout-item {
+      background: var(--bg-secondary);
+      border-radius: 12px;
+      padding: 16px;
+      margin-bottom: 12px;
+    }
+    
+    .workout-item:last-child { margin-bottom: 0; }
+    
+    .workout-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+    
+    .workout-name {
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    
+    .workout-badge {
+      font-size: 0.7rem;
+      padding: 4px 8px;
+      border-radius: 100px;
+      background: rgba(99, 102, 241, 0.15);
+      color: var(--accent);
+      font-weight: 600;
+    }
+    
+    .workout-sets {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    
+    .set-tag {
+      background: var(--bg-card);
+      padding: 6px 12px;
+      border-radius: 8px;
+      font-size: 0.8rem;
+      font-weight: 500;
+    }
+    
+    .set-tag span { color: var(--text-muted); }
+    
+    /* Week Chart */
+    .week-chart {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      height: 120px;
+      padding-top: 20px;
+    }
+    
+    .day-col {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+    }
+    
+    .day-bars {
+      display: flex;
+      gap: 3px;
+      align-items: flex-end;
+      height: 80px;
+    }
+    
+    .day-bar {
+      width: 8px;
+      border-radius: 4px;
+      min-height: 4px;
+    }
+    
+    .day-bar.cal { background: var(--danger); }
+    .day-bar.protein { background: var(--accent); }
+    .day-bar.workout { background: var(--success); }
+    
+    .day-label {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+    
+    .day-label.today {
+      color: var(--accent);
+      font-weight: 700;
+    }
+    
+    /* Empty State */
+    .empty-state {
+      text-align: center;
+      padding: 40px 20px;
+      color: var(--text-muted);
+    }
+    
+    .empty-state .icon {
+      font-size: 2.5rem;
+      margin-bottom: 12px;
+      opacity: 0.5;
+    }
+    
+    /* Legend */
+    .legend {
+      display: flex;
+      gap: 20px;
+      justify-content: center;
+      margin-top: 16px;
+    }
+    
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.8rem;
+      color: var(--text-secondary);
+    }
+    
+    .legend-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+    }
+    
+    /* Scrollbar */
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: var(--bg-secondary); border-radius: 3px; }
+    ::-webkit-scrollbar-thumb { background: var(--text-muted); border-radius: 3px; }
+    ::-webkit-scrollbar-thumb:hover { background: var(--text-secondary); }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header class="header">
+      <div>
+        <h1>⚡ Sheshu's Dashboard</h1>
+        <p class="date" id="currentDate"></p>
+      </div>
+      <div class="streak">
+        <span class="fire">🔥</span>
+        <span id="streakCount">1</span> day streak
+      </div>
+    </header>
+    
+    <div class="grid">
+      <!-- Calories Card -->
+      <div class="col-4">
+        <div class="card calories">
+          <div class="card-header">
+            <span class="card-title">Calories</span>
+            <div class="card-icon">🔥</div>
+          </div>
+          <div class="stat-value" id="calValue">0</div>
+          <div class="stat-label"><span id="calRemaining">2,400</span> remaining</div>
+          <div class="stat-bar">
+            <div class="stat-bar-fill" id="calBar" style="width: 0%"></div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Protein Card -->
+      <div class="col-4">
+        <div class="card protein">
+          <div class="card-header">
+            <span class="card-title">Protein</span>
+            <div class="card-icon">💪</div>
+          </div>
+          <div class="stat-value"><span id="proteinValue">0</span>g</div>
+          <div class="stat-label"><span id="proteinRemaining">150</span>g remaining</div>
+          <div class="stat-bar">
+            <div class="stat-bar-fill" id="proteinBar" style="width: 0%"></div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Workouts Card -->
+      <div class="col-4">
+        <div class="card workouts">
+          <div class="card-header">
+            <span class="card-title">Today's Workout</span>
+            <div class="card-icon">🏋️</div>
+          </div>
+          <div class="stat-value" id="workoutValue">0</div>
+          <div class="stat-label">exercises completed</div>
+          <div class="stat-bar">
+            <div class="stat-bar-fill" id="workoutBar" style="width: 0%"></div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Progress Ring -->
+      <div class="col-4">
+        <div class="card">
+          <div class="card-header">
+            <span class="card-title">Daily Progress</span>
+          </div>
+          <div class="ring-container">
+            <div class="ring">
+              <svg viewBox="0 0 100 100">
+                <circle class="bg" cx="50" cy="50" r="42"/>
+                <circle class="progress-cal" cx="50" cy="50" r="42" 
+                  stroke-dasharray="264" stroke-dashoffset="264" id="ringCal"/>
+                <circle class="bg" cx="50" cy="50" r="30"/>
+                <circle class="progress-protein" cx="50" cy="50" r="30" 
+                  stroke-dasharray="188" stroke-dashoffset="188" id="ringProtein"/>
+              </svg>
+              <div class="ring-center">
+                <div class="value" id="ringPercent">0%</div>
+                <div class="label">overall</div>
+              </div>
+            </div>
+          </div>
+          <div class="legend">
+            <div class="legend-item">
+              <div class="legend-dot" style="background: var(--danger)"></div>
+              Calories
+            </div>
+            <div class="legend-item">
+              <div class="legend-dot" style="background: var(--accent)"></div>
+              Protein
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Food Log -->
+      <div class="col-8">
+        <div class="card">
+          <div class="card-header">
+            <span class="card-title">Today's Meals</span>
+          </div>
+          <div class="food-log" id="foodLog">
+            <div class="empty-state">
+              <div class="icon">🥗</div>
+              <p>No meals logged yet</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Week Overview -->
+      <div class="col-6">
+        <div class="card">
+          <div class="card-header">
+            <span class="card-title">This Week</span>
+          </div>
+          <div class="week-chart" id="weekChart"></div>
+          <div class="legend">
+            <div class="legend-item">
+              <div class="legend-dot" style="background: var(--danger)"></div>
+              Cal
+            </div>
+            <div class="legend-item">
+              <div class="legend-dot" style="background: var(--accent)"></div>
+              Protein
+            </div>
+            <div class="legend-item">
+              <div class="legend-dot" style="background: var(--success)"></div>
+              Workout
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Workout Log -->
+      <div class="col-6">
+        <div class="card">
+          <div class="card-header">
+            <span class="card-title">Workout Log</span>
+          </div>
+          <div id="workoutLog">
+            <div class="empty-state">
+              <div class="icon">🏋️</div>
+              <p>No workout logged today</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <script>
+    // Data injected by Juno
+    const DATA = /*DATA_START*/{
+      profile: {
+        dailyCalorieTarget: 2400,
+        proteinTarget: 150,
+        currentWeight: 74,
+        unit: "kg"
+      },
+      nutrition: [
+        { "date": "2026-02-04", "time": "breakfast", "food": "4 Idli", "calories": 240, "protein": 8 },
+        { "date": "2026-02-04", "time": "breakfast", "food": "Sambar", "calories": 150, "protein": 6 },
+        { "date": "2026-02-04", "time": "mid-morning", "food": "Whey Protein (1 scoop)", "calories": 120, "protein": 24 },
+        { "date": "2026-02-04", "time": "snack", "food": "Guava (1 medium)", "calories": 70, "protein": 2.5 },
+        { "date": "2026-02-04", "time": "lunch", "food": "Rice (125g)", "calories": 160, "protein": 3 },
+        { "date": "2026-02-04", "time": "lunch", "food": "Sambar", "calories": 150, "protein": 6 },
+        { "date": "2026-02-04", "time": "lunch", "food": "Curd (1 cup)", "calories": 100, "protein": 4 },
+        { "date": "2026-02-04", "time": "lunch", "food": "3-Egg Omelette", "calories": 260, "protein": 18 }
+      ],
+      workouts: []
+    }/*DATA_END*/;
+    
+    const foodIcons = {
+      'breakfast': '🍳',
+      'mid-morning': '🥤',
+      'snack': '🍎',
+      'lunch': '🍱',
+      'dinner': '🍽️',
+      'post-workout': '💪'
+    };
+    
+    function formatDate(date) {
+      return date.toLocaleDateString('en-US', { 
+        weekday: 'long', 
+        year: 'numeric', 
+        month: 'long', 
+        day: 'numeric' 
+      });
+    }
+    
+    function render() {
+      const today = new Date().toISOString().split('T')[0];
+      document.getElementById('currentDate').textContent = formatDate(new Date());
+      
+      // Today's nutrition
+      const todayNutrition = DATA.nutrition.filter(n => n.date === today);
+      const totalCal = todayNutrition.reduce((s, n) => s + n.calories, 0);
+      const totalProtein = todayNutrition.reduce((s, n) => s + (n.protein || 0), 0);
+      
+      const calTarget = DATA.profile.dailyCalorieTarget;
+      const proteinTarget = DATA.profile.proteinTarget;
+      
+      const calPct = Math.min(100, (totalCal / calTarget) * 100);
+      const proteinPct = Math.min(100, (totalProtein / proteinTarget) * 100);
+      
+      document.getElementById('calValue').textContent = totalCal.toLocaleString();
+      document.getElementById('calRemaining').textContent = Math.max(0, calTarget - totalCal).toLocaleString();
+      document.getElementById('calBar').style.width = calPct + '%';
+      
+      document.getElementById('proteinValue').textContent = Math.round(totalProtein);
+      document.getElementById('proteinRemaining').textContent = Math.max(0, Math.round(proteinTarget - totalProtein));
+      document.getElementById('proteinBar').style.width = proteinPct + '%';
+      
+      // Progress ring
+      const calOffset = 264 - (264 * calPct / 100);
+      const proteinOffset = 188 - (188 * proteinPct / 100);
+      document.getElementById('ringCal').style.strokeDashoffset = calOffset;
+      document.getElementById('ringProtein').style.strokeDashoffset = proteinOffset;
+      document.getElementById('ringPercent').textContent = Math.round((calPct + proteinPct) / 2) + '%';
+      
+      // Food log
+      const foodLog = document.getElementById('foodLog');
+      if (todayNutrition.length === 0) {
+        foodLog.innerHTML = '<div class="empty-state"><div class="icon">🥗</div><p>No meals logged yet</p></div>';
+      } else {
+        foodLog.innerHTML = todayNutrition.map(n => `
+          <div class="food-item">
+            <div class="food-info">
+              <div class="food-icon">${foodIcons[n.time] || '🍴'}</div>
+              <div>
+                <div class="food-name">${n.food}</div>
+                <div class="food-time">${n.time}</div>
+              </div>
+            </div>
+            <div class="food-macros">
+              <div class="food-cal">${n.calories} cal</div>
+              <div class="food-protein">${n.protein || 0}g protein</div>
+            </div>
+          </div>
+        `).join('');
+      }
+      
+      // Today's workout
+      const todayWorkouts = DATA.workouts.filter(w => w.date === today);
+      const exerciseCount = todayWorkouts.length;
+      document.getElementById('workoutValue').textContent = exerciseCount;
+      document.getElementById('workoutBar').style.width = Math.min(100, exerciseCount * 20) + '%';
+      
+      // Workout log
+      const workoutLog = document.getElementById('workoutLog');
+      if (todayWorkouts.length === 0) {
+        workoutLog.innerHTML = '<div class="empty-state"><div class="icon">🏋️</div><p>No workout logged today</p></div>';
+      } else {
+        workoutLog.innerHTML = todayWorkouts.map(w => `
+          <div class="workout-item">
+            <div class="workout-header">
+              <div class="workout-name">
+                ${w.exercise}
+                ${w.muscle ? `<span class="workout-badge">${w.muscle}</span>` : ''}
+              </div>
+            </div>
+            <div class="workout-sets">
+              ${w.sets.map((s, i) => `
+                <div class="set-tag">${s.reps} × ${s.weight}<span>kg</span></div>
+              `).join('')}
+            </div>
+          </div>
+        `).join('');
+      }
+      
+      // Week chart
+      const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+      const weekChart = document.getElementById('weekChart');
+      let chartHtml = '';
+      
+      for (let i = 6; i >= 0; i--) {
+        const d = new Date();
+        d.setDate(d.getDate() - i);
+        const dateStr = d.toISOString().split('T')[0];
+        const isToday = dateStr === today;
+        
+        const dayCal = DATA.nutrition.filter(n => n.date === dateStr).reduce((s, n) => s + n.calories, 0);
+        const dayProtein = DATA.nutrition.filter(n => n.date === dateStr).reduce((s, n) => s + (n.protein || 0), 0);
+        const dayWorkout = DATA.workouts.filter(w => w.date === dateStr).length;
+        
+        const calH = Math.min(80, (dayCal / calTarget) * 80);
+        const proteinH = Math.min(80, (dayProtein / proteinTarget) * 80);
+        const workoutH = Math.min(80, dayWorkout * 16);
+        
+        chartHtml += `
+          <div class="day-col">
+            <div class="day-bars">
+              <div class="day-bar cal" style="height: ${calH}px"></div>
+              <div class="day-bar protein" style="height: ${proteinH}px"></div>
+              <div class="day-bar workout" style="height: ${workoutH}px"></div>
+            </div>
+            <div class="day-label ${isToday ? 'today' : ''}">${days[d.getDay()]}</div>
+          </div>
+        `;
+      }
+      weekChart.innerHTML = chartHtml;
+    }
+    
+    render();
+  </script>
+</body>
+</html>
