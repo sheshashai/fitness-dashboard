@@ -1,0 +1,12 @@
+{
+  "logs": [
+    { "date": "2026-02-04", "time": "breakfast", "food": "4 Idli", "calories": 240, "protein": 8 },
+    { "date": "2026-02-04", "time": "breakfast", "food": "Sambar", "calories": 150, "protein": 6 },
+    { "date": "2026-02-04", "time": "mid-morning", "food": "Whey Protein (1 scoop)", "calories": 120, "protein": 24 },
+    { "date": "2026-02-04", "time": "snack", "food": "Guava (1 medium)", "calories": 70, "protein": 2.5 },
+    { "date": "2026-02-04", "time": "lunch", "food": "Rice (125g)", "calories": 160, "protein": 3 },
+    { "date": "2026-02-04", "time": "lunch", "food": "Sambar", "calories": 150, "protein": 6 },
+    { "date": "2026-02-04", "time": "lunch", "food": "Curd (1 cup)", "calories": 100, "protein": 4 },
+    { "date": "2026-02-04", "time": "lunch", "food": "3-Egg Omelette", "calories": 260, "protein": 18 }
+  ]
+}

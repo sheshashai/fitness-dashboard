@@ -1,0 +1,17 @@
+{
+  "name": "Sheshu",
+  "currentWeight": 74,
+  "goalWeight": null,
+  "goal": "recomposition",
+  "dailyCalorieTarget": 2400,
+  "proteinTarget": 150,
+  "height": 167,
+  "age": 23,
+  "sex": "male",
+  "activityLevel": "moderate",
+  "bmr": 1674,
+  "tdee": 2594,
+  "startDate": "2026-02-04",
+  "startWeight": 74,
+  "unit": "kg"
+}
