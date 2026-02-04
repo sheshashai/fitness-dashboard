@@ -1,3 +1,14 @@
 {
-  "logs": []
+  "logs": [
+    {
+      "date": "2026-02-04",
+      "exercise": "Squats",
+      "muscle": "Legs",
+      "sets": [
+        { "reps": 15, "weight": 60 },
+        { "reps": 15, "weight": 60 },
+        { "reps": 15, "weight": 60 }
+      ]
+    }
+  ]
 }
