@@ -7,6 +7,8 @@
     { "date": "2026-02-04", "time": "lunch", "food": "Rice (125g)", "calories": 160, "protein": 3 },
     { "date": "2026-02-04", "time": "lunch", "food": "Sambar", "calories": 150, "protein": 6 },
     { "date": "2026-02-04", "time": "lunch", "food": "Curd (1 cup)", "calories": 100, "protein": 4 },
-    { "date": "2026-02-04", "time": "lunch", "food": "3-Egg Omelette", "calories": 260, "protein": 18 }
+    { "date": "2026-02-04", "time": "lunch", "food": "3-Egg Omelette", "calories": 260, "protein": 18 },
+    { "date": "2026-02-04", "time": "dinner", "food": "Soya Chunks Curry (290g)", "calories": 335, "protein": 50 },
+    { "date": "2026-02-04", "time": "dinner", "food": "Multigrain Chapati (135g)", "calories": 454, "protein": 19 }
   ]
 }

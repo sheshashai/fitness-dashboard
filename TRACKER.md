@@ -23,14 +23,16 @@
 | Lunch | Sambar | 150 | 6g |
 | Lunch | Curd (1 cup) | 100 | 4g |
 | Lunch | 3-Egg Omelette | 260 | 18g |
+| Dinner | Soya Chunks Curry (290g) | 335 | 50g |
+| Dinner | Multigrain Chapati (135g) | 454 | 19g |
 
 ### Today's Total
 | | Consumed | Target | Remaining |
 |---|----------|--------|-----------|
-| **Calories** | 1,250 | 2,400 | 1,150 |
-| **Protein** | 71.5g | 150g | 78.5g |
+| **Calories** | 2,039 | 2,400 | 361 |
+| **Protein** | 140.5g | 150g | 9.5g |
 
-**Progress:** ██████░░░░ 52% calories | ████████░░ 48% protein
+**Progress:** █████████░ 85% calories | █████████░ 94% protein 🔥
 
 ---
 
@@ -38,14 +40,14 @@
 
 | Day | Calories | Protein | Notes |
 |-----|----------|---------|-------|
-| Tue 04 | 1,250 | 71.5g | *in progress* |
+| Tue 04 | 2,039 | 140.5g | *in progress — crushing it!* |
 
 ---
 
 ## 💪 Streak & Notes
 - **Day 1** of tracking
-- Keep protein high — aim for 150g+ daily
-- Good sources: eggs, chicken, fish, paneer, whey, curd, dal
+- Almost hit protein goal! 🎯
+- Good sources: eggs, chicken, fish, paneer, whey, curd, dal, soya
 
 ---
 
